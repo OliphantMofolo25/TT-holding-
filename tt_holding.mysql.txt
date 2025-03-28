@@ -1,0 +1,518 @@
+CREATE DATABASE tt_holding;
+use tt_holding;
+
+CREATE TABLE PERSON (
+    ID_Number INT(15) PRIMARY KEY NOT NULL,
+    Name VARCHAR(20) NOT NULL,
+    Address VARCHAR(20) NOT NULL,
+    Phone_Number INT(8) NOT NULL,
+    Birth_date DATE NOT NULL
+);
+
+CREATE TABLE ORGANISATION (
+    Organisation_ID INT(15) PRIMARY KEY NOT NULL,
+    Organisation_Name VARCHAR(30) NOT NULL,
+    Address VARCHAR(20) NOT NULL,
+    Phone_Number INT(8) NOT NULL,
+    Email VARCHAR(30) NOT NULL,
+    Budget_Number INT(4) NOT NULL
+);
+
+CREATE TABLE EMPLOYMENT (
+    EMPLOYEE_ID INT(15) PRIMARY KEY NOT NULL,
+    ID_Number INT NOT NULL,
+    Organisation_ID INT(15) NOT NULL,
+    Employment_Date DATE NOT NULL,
+    TERMINATION_DATE DATE,
+    Position_ID INT(15),  -- Added Position_ID column
+    FOREIGN KEY (Organisation_ID) REFERENCES ORGANISATION(Organisation_ID),  
+    FOREIGN KEY (Position_ID) REFERENCES Position(Position_ID)  
+);
+
+CREATE TABLE Position (
+    Position_ID INT(15) PRIMARY KEY NOT NULL,
+    Title VARCHAR(50) NOT NULL,
+    Organisation_ID INT(15) NOT NULL,
+    Start_Date DATE NOT NULL,
+    Termination_Date DATE,
+    Salary DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (Organisation_ID) REFERENCES ORGANISATION(Organisation_ID)
+);
+
+CREATE TABLE Part_Time_Employee (
+    EMPLOYEE_ID INT(15) PRIMARY KEY NOT NULL,
+    ID_Number INT NOT NULL,
+    Organisation_ID INT(15) NOT NULL,
+    Employment_Date DATE NOT NULL,
+    Termination_Date DATE,
+    Hours INT NOT NULL,  
+    FOREIGN KEY (ID_Number) REFERENCES PERSON(ID_Number),
+    FOREIGN KEY (Organisation_ID) REFERENCES ORGANISATION(Organisation_ID)
+);
+
+CREATE TABLE Permanent_Employee (
+    EMPLOYEE_ID INT(15) PRIMARY KEY NOT NULL,
+    ID_Number INT NOT NULL,
+    Organisation_ID INT(15) NOT NULL,
+    Employment_Date DATE NOT NULL,
+    Termination_Date DATE,
+    Extra_Bonus DECIMAL(10, 2) NOT NULL,  
+    Extra_Credit DECIMAL(10, 2) NOT NULL, 
+    FOREIGN KEY (ID_Number) REFERENCES PERSON(ID_Number),
+    FOREIGN KEY (Organisation_ID) REFERENCES ORGANISATION(Organisation_ID)
+);
+CREATE TABLE Internal_Organisation (
+    Organisation_ID INT(15) PRIMARY KEY NOT NULL,
+    Organisation_Name VARCHAR(30) NOT NULL,
+    Address VARCHAR(20) NOT NULL,
+    Phone_Number INT(8) NOT NULL,
+    Email VARCHAR(30) NOT NULL,
+    Internal_Budget_Number INT(4) NOT NULL,  
+    Department_Code VARCHAR(10) NOT NULL,   
+    FOREIGN KEY (Organisation_ID) REFERENCES ORGANISATION(Organisation_ID)
+);
+
+CREATE TABLE External_Organisation (
+    Organisation_ID INT(15) PRIMARY KEY NOT NULL,
+    Organisation_Name VARCHAR(30) NOT NULL,
+    Address VARCHAR(20) NOT NULL,
+    Phone_Number INT(8) NOT NULL,
+    Email VARCHAR(30) NOT NULL,
+    Sponsor_Name VARCHAR(50) NOT NULL,        
+    External_Budget_Number INT(4) NOT NULL,   
+    FOREIGN KEY (Organisation_ID) REFERENCES ORGANISATION(Organisation_ID)
+);
+
+
+
+Data insertion
+
+INSERT INTO PERSON (ID_Number, Name, Address, Phone_Number, Birth_date) VALUES
+(003241, 'Alina Sello', '123 kingsway St', 62345678, '2001-01-15'),
+(006932, 'Lineo Rapene', '456 Moshoeshoe I St', 53456789, '2000-02-20'),
+(003493, 'Qilo Nnete', '789 Florida St', 54567890, '1999-03-25'),
+(004217, 'Bobile Itekeng', '321 Ha Thamae', 65678901, '2005-04-30'),
+(004815, 'Itumeleng Gladys', '654 Lesia', 56789012, '1995-05-05'),
+(006494, 'Sehobela Khauta', '987 Motimposo', 67890123, '2004-06-10'),
+(007219, 'Limpho Moreki', '159 Thabong', 68901234, '1998-07-15'),
+(008840, 'Tsebeletso Monki', '753 Lithabaneng', 59012345, '1996-08-20'),
+(009742, 'Thabo Moses', '852 Thetsane', 60123456, '2002-09-25'),
+(010241, 'Julia Mosola', '369 TonaKholo St', 51234567, '2003-10-30');
+(123456, 'Thabo Mokoena', 'Maseru', 64567901, '1985-01-15'),
+(234567, 'Lerato Nkosi', 'Johannesburg', 56789012, '1990-02-20'),
+(345678, 'Sipho Khumalo', 'Bloemfontein', 64567891, '1988-03-25'),
+(456789, 'Nandi Dlamini', 'Pretoria', 56789002, '1992-04-30'),
+(567890, 'Mpho Ramaphosa', 'Maseru', 64589013, '1987-05-05'),
+(678901, 'Palesa Mothibi', 'Durban', 67890124, '1993-06-10'),
+(789012, 'Kabelo Matlosa', 'Maseru', 59012345, '1980-07-15'),
+(890123, 'Tshepo Mofolo', 'Johannesburg', 67812346, '1984-08-20'),
+(901234, 'Bontle Mofolo', 'Maseru', 64523457, '1991-09-25'),
+(012345, 'Dineo Makhura', 'Pretoria', 51234568, '1986-10-30');
+
+
+INSERT INTO EMPLOYMENT (EMPLOYEE_ID, ID_Number, Organisation_ID, Employment_Date, TERMINATION_DATE, Position_ID) VALUES
+(90101, 003241, 1, '2023-01-01', NULL, '0001'),  
+(90102, 006932, 1, '2023-01-01', NULL, '0002'),  
+(90103, 003493, 1, '2023-01-01', NULL, '0003'), 
+(90104, 004217, 1, '2023-01-01', NULL, '0004'),  
+(90105, 004815, 1, '2023-01-01', NULL, '0005'),  
+(90106, 006494, 1, '2023-01-01', NULL, '0006'),  
+(90107, 007219, 1, '2023-01-01', NULL, '0007'),  
+(90108, 008840, 1, '2023-01-01', NULL, '0008'),  
+(90109, 009742, 1, '2023-01-01', NULL, '0009'),
+(90110, 010241, 1, '2023-01-01', NULL, '0010');  
+
+INSERT INTO Permanent_Employee (EMPLOYEE_ID, ID_Number, Organisation_ID, Employment_Date, Termination_Date, Extra_Bonus, Extra_Credit) VALUES
+(90101, 003241, 1, '2023-01-01', NULL, 5000.00, 1000.00),  
+(90102, 006932, 1, '2023-01-01', NULL, 3000.00, 500.00),   
+(90103, 004217, 1, '2023-01-01', NULL, 4000.00, 800.00),   
+(90104, 004815, 1, '2023-01-01', NULL, 2500.00, 300.00),   
+(90105, 006494, 1, '2023-01-01', NULL, 6000.00, 1200.00); 
+
+INSERT INTO Part_Time_Employee (EMPLOYEE_ID, ID_Number, Organisation_ID, Employment_Date, Termination_Date, Hours) VALUES
+(90106, 007219, 1, '2023-01-01', NULL, 20),  
+(90107, 008840, 1, '2023-01-01', NULL, 15),  
+(90108, 009742, 1, '2023-01-01', NULL, 25), 
+(90109, 010241, 1, '2023-01-01', NULL, 30),  
+(90110, 123456, 1, '2023-01-01', NULL, 10);  
+
+
+
+
+INSERT INTO ORGANISATION (Organisation_ID, Organisation_Name, Address, Phone_Number, Email, Budget_Number) VALUES
+(1, 'Hi Tech', '100 Victoria Hotel', 12345678, 'vic@hotel.com', 1001),
+(2, 'Health Solutions', '200 Health Blvd', 23456789, 'contact@healthsolutions.com', 1002),
+(3, 'Tholo Energy', '300 Roma', 34567890, 'tholo@energy.com', 1003),
+(4, 'Lesotho College', '400 Learn St', 45678901, 'ls@educationfirst.com', 1004),
+(5, 'Standard Lesotho', '500 Money St', 56789012, 'std@bank.com', 1003), 
+(6, 'Travel Agency', '600 Travel Ln', 67890123, 'info@travelagency.com', 1006),
+(7, 'Jays Foods', '700 Food St', 78901234, 'j@foodservices.com', 1007),
+(8, 'Eagle Construction Co', '800 Build St', 89012345, 'info@constructionco.com', 1008),
+(9, 'Retail Group', '900 Shop St', 90123456, 'e@retailgroup.com', 1009),
+(10, 'Penya Playuse', '100 Media St', 01234567, 'pp@play.com', 1010);
+
+
+
+INSERT INTO Internal_Organisation (Organisation_ID, Organisation_Name, Address, Phone_Number, Email, Internal_Budget_Number, Department_Code) VALUES
+(1, 'Hi Tech', '100 Victoria Hotel', 12345678, 'vic@hotel.com', 2001, 'IT01'),
+(2, 'Health Solutions', '200 Health Blvd', 23456789, 'contact@healthsolutions.com', 2002, 'HR01'),
+(3, 'Tholo Energy', '300 Roma', 34567890, 'tholo@energy.com', 2003, 'ENG01'),
+(4, 'Lesotho College', '400 Learn St', 45678901, 'ls@educationfirst.com', 2004, 'EDU01'),
+(5, 'Standard Lesotho', '500 Money St', 56789012, 'std@bank.com', 2005, 'FIN01'),
+(6, 'Travel Agency', '600 Travel Ln', 67890123, 'info@travelagency.com', 2006, 'TRV01'),
+(7, 'Jays Foods', '700 Food St', 78901234, 'j@foodservices.com', 2007, 'FD01'),
+(8, 'Eagle Construction Co', '800 Build St', 89012345, 'info@constructionco.com', 2008, 'CON01'),
+(9, 'Retail Group', '900 Shop St', 90123456, 'e@retailgroup.com', 2009, 'RTL01'),
+(10, 'Penya Playuse', '100 Media St', 01234567, 'pp@play.com', 2010, 'MD01');
+
+INSERT INTO External_Organisation (Organisation_ID, Organisation_Name, Address, Phone_Number, Email, Sponsor_Name, External_Budget_Number) VALUES
+(1, 'Hi Tech', '100 Victoria Hotel', 12345678, 'vic@hotel.com', 'Tech Sponsor A', 3001),
+(2, 'Health Solutions', '200 Health Blvd', 23456789, 'contact@healthsolutions.com', 'Health Sponsor B', 3002),
+(3, 'Tholo Energy', '300 Roma', 34567890, 'tholo@energy.com', 'Energy Sponsor C', 3003),
+(4, 'Lesotho College', '400 Learn St', 45678901, 'ls@educationfirst.com', 'Education Sponsor D', 3004),
+(5, 'Standard Lesotho', '500 Money St', 56789012, 'std@bank.com', 'Finance Sponsor E', 3005);
+
+
+INSERT INTO Position (Position_ID, Title, Organisation_ID, Start_Date, Termination_Date, Salary) VALUES
+('0001', 'Web Developer', 1, '2020-01-01', NULL, 70000.00),
+('0002', 'Data Scientist', 2, '2019-02-15', NULL, 60000.00),
+('0003', 'Product Manager', 3, '2021-03-10', NULL, 80000.00),
+('0004', 'Recruitment Specialist', 4, '2018-04-20', NULL, 55000.00),
+('0005', 'Budget Analyst', 5, '2022-05-25', NULL, 65000.00),
+('0006', 'Digital Marketing Specialist', 6, '2020-06-30', NULL, 50000.00),
+('0007', 'Account Executive', 7, '2017-07-15', NULL, 45000.00),
+('0008', 'Client Support Specialist', 8, '2021-08-05', NULL, 40000.00),
+('0009', 'SEO Specialist', 9, '2019-09-10', NULL, 35000.00),
+('0010', 'Visual Designer', 10, '2020-10-20', NULL, 55000.00);
+
+
+Creating Views
+
+Table Person
+
+1. CREATE VIEW Population AS
+SELECT 
+    ID_Number,
+    Name,
+    Address,
+    Phone_Number,
+    Birth_date
+FROM 
+    PERSON;
+
+2.CREATE VIEW PeopleBornAfter2000 AS
+SELECT 
+    ID_Number,
+    Name,
+    Address,
+    Phone_Number,
+    Birth_date
+FROM 
+    PERSON
+WHERE 
+    Birth_date > '2000-01-01';
+
+Organisation Table
+
+1. CREATE VIEW AllOrganisations AS
+   SELECT 
+    Organisation_ID,
+    Organisation_Name,
+    Address,
+    Phone_Number,
+    Email,
+    Budget_Number
+    FROM 
+    ORGANISATION;
+
+2.CREATE VIEW OrganisationsWithHighBudget AS
+SELECT 
+    Organisation_ID,
+    Organisation_Name,
+    Address,
+    Phone_Number,
+    Email,
+    Budget_Number
+FROM 
+    ORGANISATION
+WHERE 
+    Budget_Number > 1000;
+
+Employment Table
+
+1.CREATE VIEW AllEmploymentRecords AS
+SELECT 
+    EMPLOYEE_ID,
+    ID_Number,
+    Organisation_ID,
+    Employment_Date,
+    TERMINATION_DATE
+FROM 
+    EMPLOYMENT;
+
+2.CREATE VIEW ActiveEmploymentRecords AS
+SELECT 
+    EMPLOYEE_ID,
+    ID_Number,
+    Organisation_ID,
+    Employment_Date
+FROM 
+    EMPLOYMENT
+WHERE 
+    TERMINATION_DATE IS NULL;
+
+Position Table
+
+1.CREATE VIEW AllPositions AS
+SELECT 
+    Position_ID,
+    Title,
+    Organisation_ID,
+    Start_Date,
+    Termination_Date,
+    Salary
+FROM 
+    Position;
+
+2.CREATE VIEW HighSalaryPositions AS
+SELECT 
+    Position_ID,
+    Title,
+    Organisation_ID,
+    Start_Date,
+    Salary
+FROM 
+    Position
+WHERE 
+    Salary > 50000;
+
+Partime_Table
+
+1.	
+
+2.CREATE VIEW PartTimeEmployeesWorkingMoreThan20Hours AS
+SELECT 
+    EMPLOYEE_ID,
+    ID_Number,
+    Organisation_ID,
+    Employment_Date,
+    Hours
+FROM 
+    Part_Time_Employee
+WHERE 
+    Hours > 20;
+
+Permanent Table
+
+1.CREATE VIEW AllPermanentEmployees AS
+SELECT 
+    EMPLOYEE_ID,
+    ID_Number,
+    Organisation_ID,
+    Employment_Date,
+    Termination_Date,
+    Extra_Bonus,
+    Extra_Credit
+FROM 
+    Permanent_Employee;
+
+2.CREATE VIEW PermanentEmployeesWithHighBonus AS
+SELECT 
+    EMPLOYEE_ID,
+    ID_Number,
+    Organisation_ID,
+    Employment_Date,
+    Extra_Bonus
+FROM 
+    Permanent_Employee
+WHERE 
+    Extra_Bonus > 3000;
+
+Internal Organisation Table
+
+1.CREATE VIEW AllInternalOrganisations AS
+SELECT 
+    Organisation_ID,
+    Organisation_Name,
+    Address,
+    Phone_Number,
+    Email,
+    Internal_Budget_Number,
+    Department_Code
+FROM 
+    Internal_Organisation;
+
+2.CREATE VIEW InternalOrganisationsWithSpecificDepartment AS
+SELECT 
+    Organisation_ID,
+    Organisation_Name,
+    Department_Code
+FROM 
+    Internal_Organisation
+WHERE 
+    Department_Code = 'IT01';
+
+External Organisation Table
+
+1.CREATE VIEW AllExternalOrganisations AS
+SELECT 
+    Organisation_ID,
+    Organisation_Name,
+    Address,
+    Phone_Number,
+    Email,
+    External_Budget_Number
+FROM 
+    External_Organisation;
+
+2.CREATE VIEW ExternalOrganisationsWithHighBudget AS
+SELECT 
+       Organisation_ID,
+    Organisation_Name,
+    External_Budget_Number
+FROM 
+    External_Organisation
+WHERE
+    External_Budget_Number  > 3002;
+
+
+
+CREATING LOG TABLES FOR STORED CHANGES MADE ON EACH MAIN TABLE 
+
+CREATE TABLE PersonLog (
+    Log_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Action VARCHAR(10),
+    ID_Number INT,
+    Change_Date DATETIME
+);
+
+
+
+
+
+Creating Triggers
+
+DELIMITER //
+
+CREATE TRIGGER BeforeInsertPerson
+BEFORE INSERT ON PERSON
+FOR EACH ROW
+BEGIN
+    INSERT INTO PersonLog (Action, ID_Number, Change_Date)
+    VALUES ('INSERT', NEW.ID_Number, NOW());
+END;
+//
+
+CREATE TRIGGER BeforeUpdatePerson
+BEFORE UPDATE ON PERSON
+FOR EACH ROW
+BEGIN
+    INSERT INTO PersonLog (Action, ID_Number, Change_Date)
+    VALUES ('UPDATE', NEW.ID_Number, NOW());
+END;
+//
+
+CREATE TRIGGER BeforeDeletePerson
+BEFORE DELETE ON PERSON
+FOR EACH ROW
+BEGIN
+    INSERT INTO PersonLog (Action, ID_Number, Change_Date)
+    VALUES ('DELETE', OLD.ID_Number, NOW());
+END;
+//
+
+CREATE TRIGGER AfterDeletePerson
+AFTER DELETE ON PERSON
+FOR EACH ROW
+BEGIN
+    INSERT INTO PersonLog (Action, ID_Number, Change_Date)
+    VALUES ('AFTER DELETE', OLD.ID_Number, NOW());
+END;
+//
+
+DELIMITER ;
+
+
+
+TESTING THE TRIGGERS
+
+ PERSON TABLE
+
+   INSERT 
+INSERT INTO PERSON (ID_Number, Name, Address, Phone_Number, Birth_date) VALUES
+(929476, 'Makara Matooane', '123 Kingsway St', 55345678, '2004-01-01'),
+(839567, 'Mpho Mahlomola', '321 Ha Thamae', 67456789, '2001-05-02');
+
+   UPDATE
+ 
+UPDATE PERSON
+SET Address = '012 Thaba Bosiu St', Phone_Number = 50051859 
+WHERE ID_Number = 4815;
+
+UPDATE PERSON 
+SET Address = '112 Maseru West St', Phone_Number = 53700133 
+WHERE ID_Number =  345678;
+   
+   DELETE
+
+DELETE FROM PERSON 
+WHERE Phone_Number = 64523457;
+
+DELETE FROM PERSON 
+WHERE Phone_Number = 56789002;
+
+Procedures 
+
+
+1.DELIMITER //
+
+CREATE PROCEDURE Add_Organisation(
+    IN orgID INT,
+    IN orgName VARCHAR(30),
+    IN address VARCHAR(20),
+    IN phoneNumber INT,
+    IN email VARCHAR(30),
+    IN budgetNumber INT
+)
+BEGIN
+    INSERT INTO ORGANISATION (Organisation_ID, Organisation_Name, Address, Phone_Number, Email, Budget_Number)
+    VALUES (orgID, orgName, address, phoneNumber, email, budgetNumber);
+END;
+//
+
+DELIMITER ;
+
+
+2.DELIMITER //
+
+CREATE PROCEDURE Update_EmployeeBonus(
+    IN empID INT,
+    IN newBonus DECIMAL(10, 2)
+)
+BEGIN
+    UPDATE Permanent_Employee 
+    SET Extra_Bonus = newBonus 
+    WHERE EMPLOYEE_ID = empID;
+END;
+//
+
+DELIMITER ;
+
+
+Testing Procedures
+
+CALL Add_Organisation(19, 'Herbal Life', '199 Likoting complex', 12345678, 'herb@org.com', 2041);
+
+CALL Update_EmployeeBonus(90101, 7000.00);
+
+User Creation and Privileges 
+
+
+CREATE USER 'manager'@'localhost' IDENTIFIED BY '1111';
+CREATE USER 'deputy_manager'@'localhost' IDENTIFIED BY '1234';
+
+Privileges
+
+GRANT SELECT, INSERT ON tt_holding.* TO 'manager'@'localhost';
+GRANT SELECT ON tt_holding.* TO 'deputy_manager'@'localhost';
+GRANT UPDATE ON tt_holding.PERSON TO 'deputy_manager'@'localhost';
